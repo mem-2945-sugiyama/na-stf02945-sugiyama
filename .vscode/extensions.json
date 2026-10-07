@@ -1,0 +1,8 @@
+{
+	// このリポジトリでの開発に推奨する VS Code 拡張機能
+	// 主言語が決まったら、その言語の拡張(Python なら ms-python.python・charliermarsh.ruff 等)を追記する
+	"recommendations": [
+		// 日本語ドキュメント中心のため Markdown の lint(記法の崩れ・揺れを検知)
+		"davidanson.vscode-markdownlint"
+	]
+}

@@ -1,0 +1,33 @@
+# コミット前チェック(pre-commit)の定義
+# セットアップ: uvx pre-commit install
+# 全ファイルへの手動実行: uvx pre-commit run --all-files
+#
+# 主言語が未定のため、言語非依存のチェック(衛生・シークレット検知)だけを入れている。
+# 言語が決まったら lint/整形(Python なら ruff・mypy、TS なら eslint・prettier 等)をここへ追加する。
+
+repos:
+  # 基本の衛生チェック
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: trailing-whitespace   # 行末空白の除去
+      - id: end-of-file-fixer     # ファイル末尾の改行統一
+      - id: check-yaml            # YAML 構文チェック
+      - id: check-toml            # TOML 構文チェック
+      - id: check-json            # JSON 構文チェック
+        # VS Code 設定と会社配布の .claude/settings.json はコメント付き(JSONC)で厳密な JSON ではないため除外
+        exclude: ^\.(vscode|claude)/
+      - id: check-merge-conflict  # コンフリクトマーカー残りの検知
+      - id: check-added-large-files
+      - id: detect-private-key    # 秘密鍵の混入検知
+
+  # ※ shellcheck(シェルスクリプトの静的検査)は入れていない。shellcheck-py は導入時に GitHub から
+  #   バイナリを取得するが、社内ネットワークの SSL 証明書(自己署名)で取得に失敗するため。
+  #   シェルスクリプトを置くようになったら、brew 等で入れた shellcheck を repo: local で呼ぶ形で追加する
+  #   (その際も .claude/ は会社配布ポリシーで編集できないため対象外にする)。
+
+  # シークレット(API キー・トークン等)のパターン検知
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.30.1
+    hooks:
+      - id: gitleaks

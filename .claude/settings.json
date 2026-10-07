@@ -1,0 +1,421 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+
+  // ============================================================
+  // .claude/settings.json — チーム共通セキュリティポリシー
+  //
+  // 配置パス: <リポジトリルート>/.claude/settings.json
+  // 管理方法: git でリポジトリにコミット・PR レビュー経由で更新
+  //
+  // バージョン   : 2.1.0
+  // 作成日      : 2026-05-12
+  // 次回レビュー : 2026-08-12
+  //
+  // 【ポリシーの要点】
+  //   - シークレットファイル(認証情報・秘密鍵・各種クレデンシャル)の
+  //     読み書きは禁止
+  //   - 環境変数ダンプ・ネットワーク経由の流出経路を封鎖
+  //   - 破壊的・デプロイ・インフラ変更系コマンドは ask で確認必須
+  //   - 本ファイルは team-common baseline。フレームワーク・プロジェクト
+  //     固有のルールは含めない方針
+  //
+  // 【カスタマイズ】
+  //   各チームで必要なルール(フレームワーク・プロジェクト固有等)は
+  //   下記いずれかの方法で追加する:
+  //     - 個人レベル : .claude/settings.local.json に追記(gitignored)
+  //     - チームレベル: .claude/hooks/team-guard.sh を別途登録
+  //   本ファイル末尾の「カスタマイズエリア」コメントに参考例あり。
+  // ============================================================
+
+  "respectGitignore": true,
+
+  "companyAnnouncements": [
+    "シークレットへのアクセスは禁止。破壊的・デプロイ・インフラ変更系コマンドは確認必須。個人設定は .claude/settings.local.json に記載してください。"
+  ],
+
+  "permissions": {
+    "defaultMode": "auto",
+    "disableBypassPermissionsMode": "disable",
+
+    "allow": [
+      "Bash(git *)",
+      "Bash(pup *)",
+      "Bash(gh repo view *)",
+      "Bash(gh pr view *)",
+      "Bash(gh pr diff *)",
+      "Bash(gh pr list *)",
+      "Bash(gh issue view *)",
+      "Bash(gh issue list *)",
+      "Bash(gh run view *)",
+      "Bash(gh run list *)",
+      "Bash(gh api repos/*)",
+      "Bash(acli jira workitem view *)",
+      "Bash(acli jira workitem search *)",
+      "Bash(acli jira board issue list *)",
+      "Bash(terraform init *)",
+      "Bash(terraform plan *)",
+      "Bash(terraform fmt *)",
+      "Bash(terraform validate *)",
+      "Bash(terraform show *)",
+      "Bash(terraform version *)",
+      "Bash(aws * describe-*)",
+      "Bash(aws * list-*)",
+      "Bash(aws * get-*)",
+      "Bash(aws * batch-get-*)",
+      "Bash(aws * head-*)",
+      "Bash(aws logs filter-log-events *)",
+      "Bash(aws logs start-query *)",
+      "Bash(aws logs tail *)",
+      "Bash(aws s3 ls *)",
+      "Bash(gcloud * describe *)",
+      "Bash(gcloud * list *)",
+      "Bash(gcloud * list-*)",
+      "Bash(gcloud * get-iam-policy *)",
+      "Bash(gcloud config get *)",
+      "Bash(gcloud logging read *)",
+      "Bash(gcloud logging tail *)",
+      "Bash(gcloud storage ls *)",
+      "Bash(wc *)",
+      "Bash(ls *)",
+      "Bash(cp *)",
+      "Bash(mv *)",
+      "Bash(mkdir *)",
+      "Bash(touch *)",
+      "Bash(cat *)",
+      "Bash(head *)",
+      "Bash(tail *)",
+      "Bash(less *)",
+      "Bash(more *)",
+      "Bash(diff *)",
+      "Bash(file *)",
+      "Bash(which *)",
+      "Bash(pwd)",
+      "Bash(cd *)",
+      "Bash(echo *)",
+      "Bash(printf *)",
+      "Bash(jq *)",
+      "Bash(tree *)",
+      "Bash(find *)",
+      "Bash(npx *)",
+      "Bash(node *)",
+      "Bash(python *)",
+      "Bash(python3 *)",
+      "Bash(black *)",
+      "Bash(yamllint *)",
+      "Bash(actionlint *)",
+      "Bash(secretlint *)",
+      "Bash(docker ps *)",
+      "Bash(docker logs *)",
+      "Bash(docker images *)",
+      "Bash(docker inspect *)",
+      "Bash(docker compose ps *)",
+      "Bash(docker compose logs *)",
+      "Bash(docker compose config *)",
+      "Bash(docker compose up *)",
+      "Bash(docker compose down *)",
+      "Bash(docker compose build *)",
+      "Bash(docker compose restart *)",
+      "Bash(docker compose stop *)",
+      "Bash(docker compose start *)",
+      "Bash(kubectl get *)",
+      "Bash(kubectl describe *)",
+      "Bash(kubectl logs *)",
+      "Bash(kubectl top *)",
+      "Bash(kubectl config get-contexts *)",
+      "Bash(kubectl config current-context *)",
+      "Bash(ecspresso status *)",
+      "Bash(ecspresso diff *)",
+      "Bash(ecspresso verify *)",
+      "Bash(terraform output *)",
+      "Bash(terraform graph *)",
+      "Bash(terraform providers *)",
+      "Bash(terraform workspace list *)",
+      "Bash(terraform workspace show *)",
+      "WebSearch",
+      "WebFetch"
+    ],
+
+    "ask": [
+      "Bash(rm *)",
+      "Bash(git push *)",
+      "Bash(git reset *)",
+      "Bash(git rebase *)",
+      "Bash(chmod *)",
+      "Bash(curl *)",
+      "Bash(wget *)",
+      "Bash(docker exec *)",
+      "Bash(docker run *)",
+      "Bash(docker rm *)",
+      "Bash(docker rmi *)",
+      "Bash(docker volume rm *)",
+      "Bash(docker network rm *)",
+      "Bash(docker compose rm *)",
+      "Bash(docker compose exec *)",
+      "Bash(docker *)",
+      "Bash(kubectl apply *)",
+      "Bash(kubectl delete *)",
+      "Bash(kubectl edit *)",
+      "Bash(kubectl exec *)",
+      "Bash(kubectl patch *)",
+      "Bash(kubectl scale *)",
+      "Bash(kubectl rollout *)",
+      "Bash(kubectl *)",
+      "Bash(ecspresso *)",
+      "Bash(ecsta *)",
+      "Bash(gh auth *)",
+      "Bash(gh pr create *)",
+      "Bash(gh pr edit *)",
+      "Bash(gh pr close *)",
+      "Bash(gh pr comment *)",
+      "Bash(gh issue create *)",
+      "Bash(gh issue edit *)",
+      "Bash(gh issue close *)",
+      "Bash(gh issue comment *)"
+    ],
+
+    "deny": [
+      // ─────────────────────────────────────────────
+      // シークレットファイル系
+      // ─────────────────────────────────────────────
+      "Read(//**/.env*)",
+      "Edit(//**/.env*)",
+      "Read(//**/.envrc)",
+      "Edit(//**/.envrc)",
+      "Read(//**/master.key)",
+      "Edit(//**/master.key)",
+      "Read(//**/credentials.json)",
+      "Edit(//**/credentials.json)",
+      "Read(//**/*.pem)",
+      "Edit(//**/*.pem)",
+      "Read(//**/*.key)",
+      "Edit(//**/*.key)",
+      "Read(//**/google_drive_credentials.json)",
+      "Edit(//**/google_drive_credentials.json)",
+      "Read(//**/.ssh/**)",
+      "Edit(//**/.ssh/**)",
+      "Read(//**/.aws/**)",
+      "Edit(//**/.aws/**)",
+      "Read(//**/.config/gh/**)",
+      "Edit(//**/.config/gh/**)",
+      "Read(//**/.config/acli/**)",
+      "Edit(//**/.config/acli/**)",
+      "Read(//**/.config/pup/**)",
+      "Edit(//**/.config/pup/**)",
+      "Read(//**/.bash_history)",
+      "Edit(//**/.bash_history)",
+      "Read(//**/.gitconfig)",
+      "Edit(//**/.gitconfig)",
+      "Read(//**/.credentials.json)",
+      "Edit(//**/.credentials.json)",
+      "Read(//**/.claude.json)",
+      "Edit(//**/.claude.json)",
+      "Read(//**/credentials/**)",
+      "Edit(//**/credentials/**)",
+      "Read(//**/secrets/**)",
+      "Edit(//**/secrets/**)",
+
+      // ─────────────────────────────────────────────
+      // クラウド認証情報(AWS / GCP / Azure / Kubernetes / Docker)
+      // ─────────────────────────────────────────────
+      "Read(//**/.gcp/**)",
+      "Edit(//**/.gcp/**)",
+      "Read(//**/gcloud/**)",
+      "Edit(//**/gcloud/**)",
+      "Read(//**/.config/gcloud/**)",
+      "Edit(//**/.config/gcloud/**)",
+      "Read(//**/.azure/**)",
+      "Edit(//**/.azure/**)",
+      "Read(//**/.kube/config)",
+      "Edit(//**/.kube/config)",
+      "Read(//**/.docker/config.json)",
+      "Edit(//**/.docker/config.json)",
+
+      // ─────────────────────────────────────────────
+      // パッケージマネージャ認証ファイル(npm / RubyGems / PyPI 等)
+      // ─────────────────────────────────────────────
+      "Read(//**/.netrc)",
+      "Edit(//**/.netrc)",
+      "Read(//**/.npmrc)",
+      "Edit(//**/.npmrc)",
+      "Read(//**/.gem/credentials)",
+      "Edit(//**/.gem/credentials)",
+      "Read(//**/.pypirc)",
+      "Edit(//**/.pypirc)",
+
+      // ─────────────────────────────────────────────
+      // 証明書ファイル(PKCS#12 形式)
+      // ─────────────────────────────────────────────
+      "Read(//**/*.p12)",
+      "Edit(//**/*.p12)",
+      "Read(//**/*.pfx)",
+      "Edit(//**/*.pfx)",
+
+      // ─────────────────────────────────────────────
+      // Rails 環境別 credentials キー
+      // ─────────────────────────────────────────────
+      "Read(//**/config/credentials/*.key)",
+      "Edit(//**/config/credentials/*.key)",
+
+      // ─────────────────────────────────────────────
+      // 権限昇格・ネットワーク経由の流出防止
+      // ─────────────────────────────────────────────
+      "Bash(sudo *)",
+      "Bash(su *)",
+      "Bash(doas *)",
+      "Bash(nc *)",
+      "Bash(netcat *)",
+      "Bash(ssh *)",
+      "Bash(scp *)",
+      "Bash(sftp *)",
+
+      // ─────────────────────────────────────────────
+      // 環境変数ダンプ防止(最重要)
+      // env / proc / 各種シェル変数ダンプ経路をすべて封鎖
+      // ─────────────────────────────────────────────
+      "Bash(env)",
+      "Bash(env *)",
+      "Bash(printenv)",
+      "Bash(printenv *)",
+      "Bash(set)",
+      "Bash(export)",
+      "Bash(export -p*)",
+      "Bash(declare)",
+      "Bash(declare *)",
+      "Bash(typeset)",
+      "Bash(typeset *)",
+      "Bash(compgen -v*)",
+      "Bash(compgen -e*)",
+      "Bash(*/proc/self/environ*)",
+      "Bash(*/proc/*/environ*)",
+
+      // ─────────────────────────────────────────────
+      // パッケージ公開・インフラ変更
+      // ─────────────────────────────────────────────
+      "Bash(npm publish *)",
+      "Bash(npm unpublish *)",
+      "Bash(yarn publish *)",
+      "Bash(yarn npm publish *)",
+      "Bash(pnpm publish *)",
+      "Bash(terraform apply *)",
+      "Bash(terraform destroy *)",
+      "Bash(terraform import *)",
+      "Bash(terraform state *)",
+      "Bash(terraform taint *)",
+      "Bash(terraform untaint *)",
+
+      // ─────────────────────────────────────────────
+      // AWS / GCP の書き込み・シークレット取得
+      // ─────────────────────────────────────────────
+      "Bash(aws * create-*)",
+      "Bash(aws * update-*)",
+      "Bash(aws * put-*)",
+      "Bash(aws * delete-*)",
+      "Bash(aws * modify-*)",
+      "Bash(aws * start-instances *)",
+      "Bash(aws * start-execution *)",
+      "Bash(aws * start-build *)",
+      "Bash(aws * start-pipeline-execution *)",
+      "Bash(aws * stop-*)",
+      "Bash(aws * terminate-*)",
+      "Bash(aws * reboot-*)",
+      "Bash(aws s3 cp *)",
+      "Bash(aws s3 mv *)",
+      "Bash(aws s3 rm *)",
+      "Bash(aws s3 sync *)",
+      "Bash(aws secretsmanager get-secret-value *)",
+      "Bash(aws ssm get-parameter *)",
+      "Bash(aws ssm get-parameters *)",
+      "Bash(aws ssm get-parameters-by-path *)",
+      "Bash(gcloud * create *)",
+      "Bash(gcloud * update *)",
+      "Bash(gcloud * delete *)",
+      "Bash(gcloud * deploy *)",
+      "Bash(gcloud config set *)",
+      "Bash(gcloud storage cp *)",
+      "Bash(gcloud storage mv *)",
+      "Bash(gcloud storage rm *)",
+      "Bash(gcloud secrets versions access *)",
+      "Bash(gcloud auth print-access-token*)",
+
+      // ─────────────────────────────────────────────
+      // DB 直接アクセス禁止
+      // ─────────────────────────────────────────────
+      "Bash(psql *)",
+      "Bash(mysql *)",
+      "Bash(mongosh *)",
+      "Bash(mongo *)",
+      "Bash(redis-cli -h *)",
+
+      // ─────────────────────────────────────────────
+      // git 破壊操作
+      // ─────────────────────────────────────────────
+      "Bash(git clean *)",
+      "Bash(git push --force *)",
+      "Bash(git push --force-with-lease *)",
+      "Bash(git reset --hard *)",
+      "Bash(git filter-branch *)",
+      "Bash(git filter-repo *)",
+      "Bash(git tag -d *)",
+      "Bash(git branch -D *)",
+      "Bash(git remote rm *)",
+      "Bash(git remote remove *)",
+
+      // ─────────────────────────────────────────────
+      // chmod 全開放系(再帰オプション含む)
+      // ─────────────────────────────────────────────
+      "Bash(chmod 777 *)",
+      "Bash(chmod -R 777 *)",
+      "Bash(chmod -R a+rwx *)"
+
+      // ─────────────────────────────────────────────
+      // 【カスタマイズエリア】チーム固有ルールを追加する場所
+      //
+      // 本ファイルは team-common baseline のため、フレームワーク・
+      // プロジェクト固有のルールは含めない方針。各チームが必要なルールを
+      // 以下のいずれかの方法で追加する:
+      //
+      //   方法A: 上の chmod 行の末尾にカンマを付け、ここに追記する
+      //          ※ ただし git 管理されるため全チームに配布される点に注意
+      //
+      //   方法B: .claude/settings.local.json に追記(個人レベル・gitignored)
+      //
+      //   方法C: .claude/hooks/team-guard.sh を別途登録(チームレベル)
+      //
+      // ----------------------------------------------------
+      // Rails チーム向け追加例(必要な場合のみコピーして使う):
+      //   "Bash(RAILS_ENV=production *)",
+      //   "Bash(RAILS_ENV=\"production\" *)",
+      //   "Bash(RAILS_ENV='production' *)",
+      //   "Bash(env RAILS_ENV=production *)",
+      //   "Bash(env RAILS_ENV=\"production\" *)",
+      //   "Bash(env RAILS_ENV='production' *)",
+      //   "Bash(bundle exec rails db:drop*)",
+      //   "Bash(bundle exec rails db:reset*)",
+      //   "Bash(bundle exec rake db:drop*)",
+      //   "Bash(bundle exec rake db:reset*)",
+      //   "Bash(rails db:drop*)",
+      //   "Bash(rails db:reset*)",
+      //   "Bash(rake db:drop*)",
+      //   "Bash(rake db:reset*)"
+      //
+      // 他フレームワークの例:
+      //   Django : "Bash(DJANGO_SETTINGS_MODULE=*production*)"
+      //   k8s    : "Bash(kubectl config use-context *prod*)"
+      // ─────────────────────────────────────────────
+    ]
+  },
+
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${CLAUDE_PROJECT_DIR}/.claude/hooks/security-guard.sh"
+          }
+        ]
+      }
+    ]
+  }
+}

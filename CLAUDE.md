@@ -8,7 +8,13 @@
 
 ## リポジトリ構成
 - ローカル開発のコードを置く個人リポジトリ(GitHub: `mem-2945-sugiyama/na-stf02945-sugiyama`)
-- 主言語・ディレクトリ構成は未定。決まり次第この節に追記し、あわせて pre-commit の lint/整形・`.vscode` のフォーマッタ・`code-review` の言語別チェックリスト(`.claude/skills/code-review/languages/`)も追加する
+- 現在のプロダクト: 日報アプリ **nippo**(研修課題。詳細は README)
+  - `backend/` : API サーバー(Python 3.13 + FastAPI + SQLAlchemy 2、uv 管理)。`/api` 配下に置く
+  - `frontend/` : 画面(React + Vite + TypeScript)
+  - `importer/` : ローカルの Mac で動かす取り込み・AI 処理(`claude -p`)のスクリプト。依存は社内証明書対策の truststore のみ
+  - `compose.yaml` : ローカル開発用の Postgres と API
+- Python の lint/整形は ruff(設定はリポジトリ直下の `ruff.toml`)。TypeScript は `frontend/` の oxlint(`npm run lint`)
+- 新しい言語を使い始めたら、pre-commit の lint/整形・`.vscode` のフォーマッタ・`code-review` の言語別チェックリスト(`.claude/skills/code-review/languages/`)も追加する
 - `.claude/` : Claude Code の設定(会社配布のポリシー + スキル)
 - `.vscode/` : エディタ設定
 

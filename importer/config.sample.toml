@@ -1,0 +1,32 @@
+# nippo_auto.py の設定サンプル
+# ~/.config/nippo/config.toml にコピーして使う(リポジトリには置かない。iCal URL は秘密情報のため)
+#   mkdir -p ~/.config/nippo && cp importer/config.sample.toml ~/.config/nippo/config.toml
+#   chmod 600 ~/.config/nippo/config.toml
+
+# nippo API の URL
+api = "http://localhost:8000"
+
+[calendar]
+# 方法0(既定): Google カレンダーの「設定 → インポート/エクスポート → エクスポート」でダウンロードした zip を、
+# ダウンロードフォルダから自動で探して取り込む(当日保存された最新のもの)。設定は不要
+# export_dir = "~/Downloads"
+# export_patterns = ["*.ical.zip", "*.ics"]
+
+# 方法1: iCal の非公開アドレス(会社の設定で無効化されている場合は方法2を使う)
+# Google カレンダーの「設定 → マイカレンダーの設定 → カレンダーの統合 → iCal 形式の非公開アドレス」
+ical_urls = [
+    # "https://calendar.google.com/calendar/ical/.../private-.../basic.ics",
+]
+# 方法2: claude.ai の Google Calendar コネクタ(claude.ai の「設定 → コネクタ」で接続しておく)
+# 予定を読むツールの名前だけを列挙する。作成・削除などのツールは入れないこと
+connector_tools = [
+    # "mcp__claude_ai_Google_Calendar__list_events",
+]
+
+[claude]
+# 日報の作成に使うモデル(sonnet / haiku / opus)
+model = "sonnet"
+# カレンダーの予定取得(方法2)に使うモデル。取得と整形だけなので軽いモデルで足りる
+calendar_model = "haiku"
+# claude コマンドのパス。省略時は PATH → VS Code 拡張に同梱のもの(最新版)の順で探す
+# path = ""

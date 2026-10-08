@@ -1,0 +1,35 @@
+# ローカル開発用: DB(Postgres)と API サーバー
+# 画面は frontend/ で `npm run dev` を別途起動する(/api をこの API へプロキシ)
+services:
+  db:
+    image: postgres:16
+    environment:
+      # ローカル専用の固定値。本番(RDS)の接続情報は ECS のシークレットで渡す
+      POSTGRES_USER: nippo
+      POSTGRES_PASSWORD: nippo
+      POSTGRES_DB: nippo
+    ports:
+      # 127.0.0.1 に限定する: 固定パスワードの DB を社内ネットワークの他端末に公開しないため
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U nippo -d nippo"]
+      interval: 2s
+      timeout: 3s
+      retries: 15
+
+  backend:
+    build: ./backend
+    environment:
+      DATABASE_URL: postgresql+psycopg://nippo:nippo@db:5432/nippo
+    ports:
+      # API には認証がないため、同じくこの Mac からのみ接続できるようにする
+      - "127.0.0.1:8000:8000"
+    depends_on:
+      # API は起動時にテーブルを作るため、DB が接続を受け付けてから起動する
+      db:
+        condition: service_healthy
+
+volumes:
+  db-data:

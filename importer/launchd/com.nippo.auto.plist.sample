@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  平日 17:30 に nippo_auto.py を実行する launchd 設定のサンプル。
+  __UV__ と __REPO__ を置き換えて ~/Library/LaunchAgents/ に置く(手順は README)。
+  launchd は PATH を引き継がないため、uv は絶対パスで指定する。
+-->
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.nippo.auto</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>__UV__</string>
+    <string>run</string>
+    <string>__REPO__/importer/nippo_auto.py</string>
+  </array>
+  <key>StartCalendarInterval</key>
+  <array>
+    <dict><key>Weekday</key><integer>1</integer><key>Hour</key><integer>17</integer><key>Minute</key><integer>30</integer></dict>
+    <dict><key>Weekday</key><integer>2</integer><key>Hour</key><integer>17</integer><key>Minute</key><integer>30</integer></dict>
+    <dict><key>Weekday</key><integer>3</integer><key>Hour</key><integer>17</integer><key>Minute</key><integer>30</integer></dict>
+    <dict><key>Weekday</key><integer>4</integer><key>Hour</key><integer>17</integer><key>Minute</key><integer>30</integer></dict>
+    <dict><key>Weekday</key><integer>5</integer><key>Hour</key><integer>17</integer><key>Minute</key><integer>30</integer></dict>
+  </array>
+  <key>StandardOutPath</key>
+  <string>/tmp/nippo-auto.log</string>
+  <key>StandardErrorPath</key>
+  <string>/tmp/nippo-auto.log</string>
+</dict>
+</plist>

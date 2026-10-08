@@ -15,8 +15,9 @@ repos:
       - id: check-yaml            # YAML 構文チェック
       - id: check-toml            # TOML 構文チェック
       - id: check-json            # JSON 構文チェック
-        # VS Code 設定と会社配布の .claude/settings.json はコメント付き(JSONC)で厳密な JSON ではないため除外
-        exclude: ^\.(vscode|claude)/
+        # VS Code 設定・会社配布の .claude/settings.json・TypeScript の tsconfig は
+        # コメント付き(JSONC)で厳密な JSON ではないため除外
+        exclude: ^(\.(vscode|claude)/|frontend/tsconfig.*\.json$)
       - id: check-merge-conflict  # コンフリクトマーカー残りの検知
       - id: check-added-large-files
       - id: detect-private-key    # 秘密鍵の混入検知

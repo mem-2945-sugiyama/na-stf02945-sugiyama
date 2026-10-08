@@ -2,8 +2,8 @@
 # セットアップ: uvx pre-commit install
 # 全ファイルへの手動実行: uvx pre-commit run --all-files
 #
-# 主言語が未定のため、言語非依存のチェック(衛生・シークレット検知)だけを入れている。
-# 言語が決まったら lint/整形(Python なら ruff・mypy、TS なら eslint・prettier 等)をここへ追加する。
+# 言語非依存のチェック(衛生・シークレット検知)と、Python の lint/整形(ruff)を入れている。
+# frontend/(TypeScript)の lint は npm 依存のため pre-commit には入れず、`npm run lint` で実行する。
 
 repos:
   # 基本の衛生チェック
@@ -25,6 +25,18 @@ repos:
   #   バイナリを取得するが、社内ネットワークの SSL 証明書(自己署名)で取得に失敗するため。
   #   シェルスクリプトを置くようになったら、brew 等で入れた shellcheck を repo: local で呼ぶ形で追加する
   #   (その際も .claude/ は会社配布ポリシーで編集できないため対象外にする)。
+
+  # Python の lint と整形(設定はリポジトリ直下の ruff.toml)
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.16.10
+    hooks:
+      # 新しめの ruff は Markdown 内のコード例も整形するため、Python ファイルに限定する
+      # (レビュー用チェックリストの NG 例などが書き換わるのを防ぐ)
+      - id: ruff-check
+        args: [--fix]
+        types_or: [python, pyi]
+      - id: ruff-format
+        types_or: [python, pyi]
 
   # シークレット(API キー・トークン等)のパターン検知
   - repo: https://github.com/gitleaks/gitleaks

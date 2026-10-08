@@ -1,0 +1,12 @@
+# Python の lint/整形設定(backend/ と importer/ で共通)
+line-length = 100
+target-version = "py312"
+# 自作モジュール(app・claude_logs)を import 整列でファーストパーティとして扱うため
+src = ["backend", "importer"]
+# 新しめの ruff は Markdown 内のコード例も整形するため除外する(チェックリストの NG 例が書き換わるのを防ぐ)
+extend-exclude = ["*.md"]
+
+[lint]
+select = ["E", "F", "I", "UP", "B"]
+# 行長は ruff format が整える。プロンプトなど日本語の長い文字列は折り返すと読みにくくなるため検査しない
+ignore = ["E501"]

@@ -1,7 +1,15 @@
 {
 	// エディタ設定
-	// pre-commit(trailing-whitespace / end-of-file-fixer)と同じ結果になるよう、保存時に整える。
-	// 主言語が決まったら、その言語のフォーマッタ設定(Python なら Ruff 等)を追記する。
+	// pre-commit(trailing-whitespace / end-of-file-fixer / ruff)と同じ結果になるよう、保存時に整える。
 	"files.trimTrailingWhitespace": true,
-	"files.insertFinalNewline": true
+	"files.insertFinalNewline": true,
+	"[python]": {
+		"editor.defaultFormatter": "charliermarsh.ruff",
+		"editor.formatOnSave": true,
+		"editor.codeActionsOnSave": {
+			"source.organizeImports": "explicit"
+		}
+	},
+	// backend/ の uv 仮想環境を使う(依存の補完・型チェックのため)
+	"python.defaultInterpreterPath": "${workspaceFolder}/backend/.venv/bin/python"
 }
